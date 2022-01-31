@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 [Authorize(Roles = "Pedagoog , Moderator, Assistent")]
 public class ClientController: Controller{
 private MijnContext _context;
   private srcUser _currentUser;
+  private UserManager<srcUser> _userManager;
  public srcUser currentUser 
  {
     get { 
@@ -23,8 +25,9 @@ private MijnContext _context;
     set { _currentUser = value;}
  }
     
-    public ClientController(MijnContext context){
+    public ClientController(MijnContext context, UserManager<srcUser> userManager){
         _context =context;
+        _userManager = userManager;
     }
 
     public ActionResult Index(string zoek){
@@ -45,7 +48,7 @@ private MijnContext _context;
         //dan wordt gekeken of de chat een private chat is
         var CurrentUser =User.FindFirst(ClaimTypes.NameIdentifier).Value;
             if(User.IsInRole("Assistent")){
-                var currentUserId = _currentUser.Id;
+                var currentUserId = _userManager.GetUserId(User);
                 var currentUser = _context.Users.Where(x => x.Id == currentUserId).SingleOrDefault();
                 var NaarSpecialist = currentUser.SpecialistId;
                 

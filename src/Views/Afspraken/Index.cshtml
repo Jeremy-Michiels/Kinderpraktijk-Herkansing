@@ -1,0 +1,65 @@
+    @{
+    ViewData["Title"] = "Afspraken";
+    }
+@model List<srcUser>
+
+<div class="container">
+    <div class="row mt-3">
+        <div class="col-md-6">
+                
+            <h1>Nieuwe Afspraak</h1>
+            <form class="add-post-form">
+                <div class="form-group">
+                    <label for="Datum">Vanaf</label>
+                    <input type="datetime-local" class="form-control" id="Datum-value">
+                </div>
+                <div class="form-group">
+                    <label for="Datum2">Tot</label>
+                    <input type="datetime-local" class="form-control" id="Datum-value2">
+                </div>
+                <div class="form-group">
+                    <label for="Client">Client</label>
+                    <select class="form-control" id="Client-value">
+                        @foreach (var item in Model)
+                        {  
+                            <option value="@item.Id">@item.FirstName @item.LastName</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Beschrijving">Beschrijving</label>
+                    <textarea type="text" class="form-control" id="Beschrijving"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Voeg toe</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+
+
+    const url = "localhost:5001/Api/Afspraak"
+    const output = ''
+
+
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            data.forEach(post => {
+                output+=`
+                <div class="card mt-4 col-md-6 bg-ligt">
+                    <div class="card-body">
+                        <h5 class="card-title">${post.Client.Voornaam + " " + post.Client.Achternaam}</h5>
+                        <h6 class="card-subtitle mb-2">${post.datum + " tot " + post.EindDatum}</h6>
+                        <p class="card-text">${post.Beschrijving}</p>
+                        <a href="#" class="card-link">Delete</a>
+                    </div>
+                </div>
+                `;
+            })
+        })
+        
+
+
+</script>

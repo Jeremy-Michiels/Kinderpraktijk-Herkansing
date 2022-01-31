@@ -5,6 +5,8 @@ public class Afspraak{
     public int Id{get; set;}
    [Required]
     public DateTime datum{get; set;}
+    [Required]
+    public DateTime Einddatum{get; set;}
 
     [Required]
     public string PedagoogId{get; set;}

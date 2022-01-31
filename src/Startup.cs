@@ -67,8 +67,8 @@ namespace src
                 options.AddDefaultPolicy(builder =>
                 {
                     //dit moet later ook terug veranderd worden naar de website die gebruikt gaat worden
-                    builder.WithOrigins("https://kinderpraktijkhij2.azurewebsites.net")
-                    //builder.WithOrigins("https://localhost:5001/")
+                    //builder.WithOrigins("https://kinderpraktijkhij2.azurewebsites.net")
+                    builder.WithOrigins("https://localhost:5001")
                             .AllowCredentials();
                 })
             );

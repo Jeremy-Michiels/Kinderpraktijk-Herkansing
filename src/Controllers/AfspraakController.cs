@@ -76,6 +76,13 @@ namespace src.Controllers
         [HttpPost]
         public async Task<ActionResult<Afspraak>> PostAfspraak(Afspraak afspraak)
         {
+            foreach(var i in _context.Afspraken){
+
+                //Deze regel zorgt ervoor dat een afspraak niet gemaakt kan worden als dezelfde orthopedagoog op hetzelfde tijdstip een afspraak heeft
+                if(i.Pedagoog != afspraak.Pedagoog || !((i.datum < afspraak.datum&& i.Einddatum < afspraak.datum && i.Einddatum < afspraak.datum && i.Einddatum < afspraak.Einddatum)||(i.datum > afspraak.datum && i.datum > afspraak.Einddatum && i.Einddatum > afspraak.datum && i.Einddatum > afspraak.Einddatum))){
+                    return NoContent();
+                }
+            }
             _context.Afspraken.Add(afspraak);
             await _context.SaveChangesAsync();
 

@@ -1,0 +1,68 @@
+@model IEnumerable<srcUser>
+    <div class="container p-3">
+@if(Model!=null){
+<div id="dashboardoverzicht">
+    <h1>Overzicht</h1>
+    <p>Welkom bij de overzichtspagina van uw kind</p>
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    <p>Neemt deel aan chatgroepen</p>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @if(item.Chats.Count()>0){
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <p>Naam chatgroep</p>
+                                    </th>
+                                    <th>
+                                        <p>Aantal verstuurd chats</p>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var chat in ViewData["ChatsLijst"] as IList<Chat>)
+                                {
+                                    <td>
+                                        @chat.Naam
+                                    </td>
+                                    <td>
+                                        @chat.Messages.Count()
+                                    </td>
+                                }
+                            </tbody>
+                        </table>
+                        }else{
+                            <p>Uw kind zit nog niet in een chat</p>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}else{
+    <h1>U heeft nog geen kind aangemeld</h1> 
+    <p>Meld een kind aan krijg hier een overzicht van uw kind.</p>
+}
+</div>

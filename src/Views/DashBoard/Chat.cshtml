@@ -1,0 +1,137 @@
+@model Chat
+@{
+    ViewData["Title"] = @Model.Naam;
+}
+    <div class="row">
+        <div class="col-12"></div>
+        <div id="status" class="main-knop btn btn-danger">
+                <a id="statusText" aria-label="Chat status">Offline</a>
+        </div>
+            <form asp-controller="Dashboard" asp-action="Details" method="get">
+                <input type="hidden" value="@Model.Id" name="ChatId">
+                <input type="Submit" class="main-knop btn btn-outline-primary" value="Details">
+            </form>
+    </div>
+
+     <div class="alert alert-danger hidden" id="ErrorField" role="alert">
+        <a id="ErrorMessage"></a>
+    </div>
+    <div class="chat-body">
+    @if(Model!=null){
+        @foreach (var message in Model.Messages)
+        {
+            <div class="message">
+                <header>@message.Naam</header>
+                <p>@message.Text</p>
+                <footer>
+                    @message.timestamp.ToShortTimeString()
+                </footer>
+        </div>
+        }
+    }
+</div>
+<div class="chat-input">
+    <form onsubmit="sendMessage(event)" asp-controller="Chat" asp-action="CreateMessage" method="post">
+        <input type="hidden" name="chatId" value="@Model.Id">
+        <input type="hidden" name="roomName" value="@Model.Naam">
+        <input class="form-control form-control-lg" id="MessageField" type="text" name="Message" pattern="^([a-zA-Z0-9_ ?!]+)$">
+        <input class="btn btn-primary" value="Verstuur bericht" type="submit"/>
+    </form>
+</div>
+
+@section scripts{
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/messageBuilder.js"></script>
+<script>
+
+
+    var _connectionId = '';
+    //DIt is voor het aanmaken van een connectie met de ChatHub
+    //De naam van de Chathub is case sensitive
+    //hierbij moet ook de link veranderd worden zodra het kan
+    const connection = new signalR.HubConnectionBuilder()
+                                    .withUrl("https://kinderpraktijkhij2.azurewebsites.net/chathub")
+                                    .configureLogging(signalR.LogLevel.Information)
+                                    .build();
+
+        //In de methode hieronder wordt bij het ontvangen van een bericht het bericht toegevoegd aan de html
+    connection.on("ReceiveMessage", (data) => {
+        var message = messageBuilder() //Hier werkt de methode niet meer
+            .createMessage()
+            .withHeader(data.naam)
+            .withParagraph(data.text)
+            .withFooter(data.timestamp)
+            .build();
+            console.log("Message gemaakt");
+        document.querySelector('.chat-body').append(message);
+        console.log("Bericht toegevoegd");
+    });
+
+        //dee is leeg
+        //deze methode is verantoordelijk voor het aanroepen van de methode in de controller chat.
+        var joinroom = () =>{
+            var url = '/Chat/joinRoom/' + _connectionId +'/@Model.Naam';
+            axious.post(url,null)
+                .then(res => {
+                    console("Room Joined!", res);
+                })
+                .catch(err => {
+                    console.err("Failed to join Room!", res);
+                    showError("Het aanmelden bij de chat is mislukt. Probeer het opnieuw");
+                })
+        }
+
+    async function start() {
+        try {
+            await connection.start();
+            console.log("SignalR Connected.");
+            connection.invoke('joinRoom',""+@Model.Id);
+            console.log("invoked");
+            ChangeStatusButton("btn-success","Online","btn-danger");
+        } catch (err) {
+            console.log(err);
+            ChangeStatusButton("btn-danger","Offline","btn-success");
+            setTimeout(start, 5000);
+        }
+    };
+    connection.onclose(async () => {
+        await start();
+    });
+
+    // Start the connection.
+    start();
+
+    var form = null;
+
+    //hier wordt de hele form uit de html gepakt door gerbruik van onsubmit
+     var sendMessage = function (event) {
+        event.preventDefault();
+
+        var data = new FormData(event.target);
+        //Hieronder wordt de data gepost naar de method in chatController.cs
+        axios.post('/Chat/SendMessage',data)
+            .then(res => {
+                console.log("Message send!")
+                document.getElementById("MessageField").value = "";
+            })
+            .catch(err => {
+                showError("Het versturen van het bericht is niet gelukt. Probeer het opnieuw.");
+            })
+    }
+    function ChangeStatusButton(currentStatus,currentText, other){
+            var element = document.getElementById("status");
+            var textElement = document.getElementById("statusText");
+            element.classList.remove(other);
+            element.classList.add(currentStatus);
+            textElement.innerHTML=currentText;
+    }
+    function showError(message){
+         //Dit zorgt ervoor dat er een error wordt geprint als het fout gaat
+         var element = document.getElementById("ErrorField");
+        var errorMessage = document.getElementById("ErrorMessage");
+        element.classList.remove("hidden");
+        errorMessage.innerHTML = message;
+    }
+</script>
+}

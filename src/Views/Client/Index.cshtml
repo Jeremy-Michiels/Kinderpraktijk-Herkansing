@@ -1,0 +1,23 @@
+@{
+    ViewData["Title"] = "Clients";
+}
+@model List<Chat>
+
+<div class="container p-3">
+    <h1 class="text-center">Uw cliënten</h1>
+    <p style="font-size:large" class="text-center">Dit zijn de clienten die bij u staan ingeschreven</p>
+    <form class="filter-box" action="Client">
+        <table>
+            <tbody>
+                <tr>
+                    <td><label for="zoekBalkNaam">Zoek op naam</label></td>
+                    <td><input id="zoekBalkNaam" name="zoek" type="text" placeholder="Naam client" value='@ViewData["ZoekTerm"]'/></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="Zoek" alt="Zoek in lijst van groepen" class="btn btn-primary">
+    </form>
+
+
+<partial name="_ZelfhulpgroepenPartial" model=@Model />
+</div>

@@ -1,0 +1,36 @@
+@model Melding
+
+@{
+    ViewData["Title"] = "Create";
+}
+    <div class="container">
+    <h1>Maak een nieuwe melding</h1>
+    <p>Hier kunt u een melding maken voor de moderators. Het kan dan gaan over een persoon wat vervelend tegen je doet in de chat, een fout in de website, maar het kan ook een tip voor de website. Uw gegevens worden niet verzonden, enkel het bericht, titel en de datum van vandaag. De moderators kunnen niet zien van wie het bericht komt.</p>
+
+    <h4>Melding</h4>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Titel" class="control-label"></label>
+                    <input asp-for="Titel" class="form-control" />
+                    <span asp-validation-for="Titel" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Bericht" class="control-label"></label>
+                    <textarea asp-for="Bericht" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Bericht" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Plaats melding" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>

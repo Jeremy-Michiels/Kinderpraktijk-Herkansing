@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/db75233e-1425-4a93-9c7e-41d40b850eb7/resourceGroups/appsvc_windows_centralus/providers/Microsoft.Web/sites/KinderpraktijkGroepHij",
+    "appService.deploySubpath": "."
+}

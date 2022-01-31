@@ -1,0 +1,173 @@
+﻿@page
+@model RegisterModel
+@using Microsoft.Extensions.Options
+@inject IOptions<ReCAPTCHASettings> GoogleReCAPTHA
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Areas/Identity/Pages/_Layout.cshtml";
+}
+
+<h1 class="pl-4 pt-4">@ViewData["Title"]</h1>
+
+
+<form class="p-4" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Input.FirstName"></label>
+                <input id="naam1"asp-for="Input.FirstName" class="form-control" />
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Input.LastName"></label>
+                <input id="naam2" asp-for="Input.LastName" class="form-control"/>
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Input.Email"></label>
+                <input asp-for="Input.Email" class="form-control" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Input.Age"></label>
+                <input id="lft" asp-for="Input.Age" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label id="ibaLabel" asp-for="Input.IBAN"></label>
+                <input id="iba" asp-for="Input.IBAN" required class="form-control" />
+                <span asp-validation-for="Input.IBAN" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label id="bsnLabel" asp-for="Input.BSN"></label>
+                <input id="bsn" asp-for="Input.BSN" required class="form-control" />
+                <span asp-validation-for="Input.BSN" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Input.Password"></label>
+                <input asp-for="Input.Password" class="form-control" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Input.ConfirmPassword"></label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+        </div>
+
+            <div class="form-group">
+                <label asp-for="Input.Parent"></label>
+                <input id="IsParent" type="checkbox" onclick="CheckParent()" asp-for="Input.Parent" class="form-control">
+                <span asp-validation-for="Input.Parent" class="text-danger"></span>
+            </div>
+
+        <input asp-for="Input.Token" type="hidden" />
+    </div>
+
+    <button type="submit" onclick="dataNaarApi()"class="btn btn-success">Registreer</button>
+</form>
+
+@section Scripts {
+<script src="https://www.google.com/recaptcha/api.js?render=@GoogleReCAPTHA.Value.ReCAPTCHA_Site_Key"></script>
+<partial name="_ValidationScriptsPartial" />
+<script>
+    grecaptcha.ready(function() {
+      grecaptcha.execute('@GoogleReCAPTHA.Value.ReCAPTCHA_Site_Key', {action: 'submit'}).then(function(token) {
+            $('#Input_Token').val(token);
+      });
+    });
+
+</script>
+    <script>
+        function CheckParent(){
+            var isParentBtn = document.getElementById("IsParent");
+            if(isParentBtn.checked ==true){
+                document.getElementById("bsn").required = false;
+                document.getElementById('bsn').type = 'hidden';
+                document.getElementById('bsnLabel').style.visibility = "hidden";
+                document.getElementById("iba").required = false;
+                document.getElementById('iba').type = 'hidden';
+                document.getElementById('ibaLabel').style.visibility = "hidden";
+            }else{
+                document.getElementById("bsn").required = true;
+                document.getElementById('bsn').type = 'text'; 
+                document.getElementById('bsnLabel').style.visibility = "visible";
+                document.getElementById("iba").required = true;
+                document.getElementById('iba').type = 'text';
+                document.getElementById('ibaLabel').style.visibility = "visible";
+            }
+        }
+    </script>
+    <script>
+        // Example POST method implementation:
+        async function postData(url = '', data = {}) {
+         // Default options are marked with *
+            const response = await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+            }
+            //unused method, chooses highest property in array, and adds 1
+            function getMax(arr, prop) {
+            var max;
+            for (var i=0 ; i<arr.length ; i++) {
+                if (!max || parseInt(arr[i][prop]) > parseInt(max[prop]))
+            max = arr[i];
+    }
+    return max+1;
+}
+            //easy request for postdata, to process data put into api
+            function dataNaarApi(){
+            var isParentBtn = document.getElementById("IsParent");
+            if(isParentBtn.checked==false){
+                postData('https://orthopedagogie-zmdh.herokuapp.com/clienten?sleutel=814362922&', {
+                    "clientid": Math.floor(Math.random() * 9999999),
+                    "volledigenaam": document.getElementById('naam1').value+ " "+document.getElementById('naam2').value,
+                    "IBAN": document.getElementById('iba').value,
+                    "BSN": document.getElementById('bsn').value,
+                    "gebdatum": document.getElementById('lft').value,
+                    })
+                .then(data => {
+                    console.log(data); // JSON data parsed by `data.json()` call
+                });
+                }
+            }
+
+
+    </script>
+}  

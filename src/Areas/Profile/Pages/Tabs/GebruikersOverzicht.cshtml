@@ -1,0 +1,61 @@
+@page
+@model src.Areas.Profile.Pages.Tabs.GebruikersOverzichtModel
+@{
+    ViewData["Title"] = "OverzichtGebruikers";
+    Layout = "~/Areas/Profile/Pages/_Layout.cshtml";  
+}
+
+<div class="container-fluid">
+    <h2>Alle gebruikers</h2>
+    <hr />
+    <table>
+        <thead>
+            <tr>
+                <th class="col-md-3">
+                    Voornaam
+                </th>
+                <th>
+                    Achternaam
+                </th>
+                <th class="col-md-3">
+                    Emailadres
+                </th>
+            </tr>
+        </thead>
+        @foreach (srcUser user in Model.users)
+        {
+        <tbody>
+            
+                <tr>
+                    <td class="col-md-3">
+                        @Html.DisplayFor(modelUser => user.FirstName) 
+                    </td>
+                    <td class="col-md-3">
+                        @Html.DisplayFor(modelUser => user.LastName) 
+                    </td>
+                    <td class="col-md-3">
+                        @Html.DisplayFor(modelUser => user.Email)
+                    </td>
+                    <td class="col-md-3">
+                        @if(!user.UserBlocked)
+                        {
+                            <form method="post">
+                                <input type="hidden" asp-for="@user.Id" name="id"/>
+                                <button type="submit" value="Deblokkeren" class="btn btn-danger">Blokkeren</button>
+                            </form>
+                        }
+                        @if (user.UserBlocked)
+                        {
+                            <form method="post">
+                                <input type="hidden" asp-for="@user.Id" name="id"/>
+                                <button type="submit" value="Blokkeren" class="btn btn-danger">Deblokkeren</button>
+                            </form>                                                        
+                        }
+                    </td>
+                </tr>                
+            
+        </tbody>
+        }
+    </table>
+    
+</div>

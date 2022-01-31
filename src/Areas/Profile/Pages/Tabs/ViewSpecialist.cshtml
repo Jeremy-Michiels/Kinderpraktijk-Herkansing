@@ -1,0 +1,62 @@
+﻿@page
+@model src.Areas.Profile.Pages.Tabs.ViewSpecialistModel
+@{
+    ViewData["Title"] = "ViewSpecialisten";
+    Layout = "~/Areas/Profile/Pages/_Layout.cshtml";
+}
+
+<div class="container-fluid p-3">
+    <div class="text-center">
+        <h2>Meld u aan bij een specialist!</h2>
+        @if (Model.checkAanmelding)
+        {
+            if (User.IsInRole("Client"))
+            {
+                <p style="background-color: lightgreen;">U bent aangemeld bij een specialist</p>
+            }
+        }
+    </div>
+
+    
+        <div class="row">
+            @foreach (var a in Model.ProfileViewModel)
+            {
+                <div class="col-md-3 p-2">
+                    <div class="card">
+                        <img class="card-img-top" src="~/img/woman.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <p>
+                                <a>Specialist: @Html.DisplayFor(modelItem => a.FirstName) @Html.DisplayFor(modelItem => a.LastName)</a>
+                                <br />
+                                <a>@Html.DisplayNameFor(a => a.ProfileViewModel[0].Specialism): @Html.DisplayFor(modelItem => a.Specialism)</a>
+                                <br />
+                                <a>@Html.DisplayNameFor(a => a.ProfileViewModel[0].Description): @Html.DisplayFor(modelItem => a.Description)</a>
+                                <br />
+                                <a>@Html.DisplayNameFor(a => a.ProfileViewModel[0].Email): @Html.DisplayFor(modelItem => a.Email)</a>
+                            </p>
+
+                            @if (User.IsInRole("Client"))
+                            {
+                                if (Model.checkAanmelding == false)
+                                {
+                                    <form method="post" asp-page-handler="Register">
+                                        <input type="hidden" asp-for="@a.Id" name="id" />
+                                        <button type="submit" value="Register" class="btn btn-outline-primary mb-2">Aanmelden</button>
+                                    </form>
+                                }
+                            }
+                            else if (User.IsInRole("Moderator"))
+                            {
+                                <form method="post">
+                                    <input type="hidden" asp-for="@a.Id" name="id" />
+                                    <button type="submit" value="Delete" class="btn btn-danger">Verwijder</button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+        
+    </div>
+</div>

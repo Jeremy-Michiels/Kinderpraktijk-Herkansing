@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Groep verwijderen";
+}
+@model Chat;
+
+<h1 class="text-center">Weet u zeker dat u de chat "@Model.Naam" wilt verlaten?</h1>
+<p class="text-center">Om zeker te weten dat u de chat echt wilt verlaten vragen wij u de naam van de chat over te typen.</p>
+@if((bool)ViewData["Gelukt"]){
+    <div class="alert alert-danger" role="alert">
+        De ingevoerde naam is niet correct
+    </div>
+}
+<form asp-action="RemoveRoomFromList" asp-controller="Dashboard">
+    <input type="text" name="ChatRoomName" placeholder="@Model.Naam" required>
+    <input type="hidden" name="ChatRoomId" value="@Model.Id">
+    <input type="submit" value="controleer">
+</form>

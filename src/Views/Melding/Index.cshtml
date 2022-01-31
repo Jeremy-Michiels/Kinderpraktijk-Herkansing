@@ -1,0 +1,66 @@
+@model IEnumerable<Melding>
+
+@{
+    ViewData["Title"] = "Meldingen overzicht";
+}
+<div class="container">
+<h1>Meldingen overzicht</h1>
+<p>Hieronder staat een lijst met annonieme meldingen die zijn gemaakt over deze app</p>
+@if((bool)ViewData["Verwijderd"]){
+        <div class="alert alert-success" role="alert">
+            Uw melding is successvol verwijderd!
+        </div>
+}
+   <form asp-action="Index" method="get" class="filter-box">
+        <table>
+            <tbody>
+                <tr>
+                    <td><label for="ZoekVeld">Zoek op title</label></td>
+                    <td><input name="zoek" id="ZoekVeld" type="text" value='@ViewData["ZoekTerm"]' placeholder="Titel naam" aria-label="zoek meldingen op basis van de titel" /></td>
+                </tr>
+                <tr>
+                    <td><label for="LijstVolgorde">Sorteren op</label></td>
+                    <td>
+                        <select name="volgorde" id="LijstVolgorde" type="text">
+                            <option value='@ViewData["Selected"]' hidden>@ViewData["Selected"]</option>
+                            <option value="TitelOplopend">A-Z</option>
+                            <option value="TitelAflopend">Z-A</option>
+                            <option value="DatumAflopend">Nieuwste eerst</option>
+                            <option value="DatumOplopend">Oudste eerst</option>
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" value="Zoek" aria-label="Zoek in lijst van Meldingen" class="btn btn-primary">
+    </form>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Titel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Datum)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Titel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datum)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">Lees meer</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Verwijder</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+</div>

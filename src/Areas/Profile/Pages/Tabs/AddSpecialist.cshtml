@@ -1,0 +1,66 @@
+﻿@page
+@model src.Areas.Profile.Pages.Tabs.AddSpecialistModel
+@{
+    ViewData["Title"] = "Specialist Toevoegen";
+    Layout = "~/Areas/Profile/Pages/_Layout.cshtml";
+}
+
+<div class="container">
+
+<h1 class="pt-4">@ViewData["Title"]</h1>    
+    <p>Hier kunt u een specialist aan de lijst toevoegen. Iedere pedagoog wordt standaard aangemaakt met het wachtwoord ""</p>
+    
+<form class="pt-4 pb-4 pr-4" asp-route-returnUrl="@Model.ReturnUrl" method="post">    
+    <div asp-validation-summary="All" class="text-danger"></div>    
+    <div class="row">    
+        <div class="col-md-6">    
+            <div class="form-group">    
+                <label asp-for="Input.FirstName"></label>    
+                <input asp-for="Input.FirstName" class="form-control" />    
+                <span asp-validation-for="Input.FirstName" class="text-danger"></span>    
+            </div>    
+        </div>      
+        <div class="col-md-6">    
+            <div class="form-group">    
+                <label asp-for="Input.LastName"></label>    
+                <input asp-for="Input.LastName" class="form-control" />    
+                <span asp-validation-for="Input.LastName" class="text-danger"></span>    
+            </div>    
+        </div>             
+        <div class="col-md-6">    
+            <div class="form-group">    
+                <label asp-for="Input.Email"></label>    
+                <input asp-for="Input.Email" class="form-control" />    
+                <span asp-validation-for="Input.Email" class="text-danger"></span>    
+            </div>    
+        </div>        
+        <div class="col-md-6">    
+            <div class="form-group">    
+                <label asp-for="Input.Age"></label>    
+                <input asp-for="Input.Age" class="form-control" />    
+                <span asp-validation-for="Input.Age" class="text-danger"></span>    
+            </div>    
+        </div>
+        <div class="col-md-6">    
+            <div class="form-group">    
+                <label asp-for="Input.Specialism"></label>    
+                <input asp-for="Input.Specialism" class="form-control" />    
+                <span asp-validation-for="Input.Specialism" class="text-danger"></span>    
+            </div>    
+        </div>        
+        <div class="col-md-6">    
+            <div class="form-group">    
+                <label asp-for="Input.Description"></label>    
+                <input asp-for="Input.Description" class="form-control" />    
+                <span asp-validation-for="Input.Description" class="text-danger"></span>    
+            </div>    
+        </div>  
+    </div>    
+    
+    <button type="submit" class="btn btn-success">Registreer</button>    
+</form>    
+</div>
+    
+@section Scripts {    
+    <partial name="_ValidationScriptsPartial" />    
+}  

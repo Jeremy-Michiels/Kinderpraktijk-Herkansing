@@ -1,0 +1,51 @@
+@page
+@model src.Areas.Profile.Pages.Tabs.ClientenOverzichtModel
+@{
+    ViewData["Title"] = "OverzichtClienten";
+    Layout = "~/Areas/Profile/Pages/_Layout.cshtml";  
+}
+
+<div class="container-fluid">
+    <h2>Alle gebruikers</h2>
+    <hr />
+    <table>
+        <thead>
+            <tr>
+                <th class="col-md-3">
+                    Voornaam
+                </th>
+                <th>
+                    Achternaam
+                </th>
+                <th class="col-md-3">
+                    Emailadres
+                </th>
+            </tr>
+        </thead>
+        @foreach (srcUser user in Model.users)
+        {
+        <tbody>
+            
+                <tr>
+                    <td class="col-md-3">
+                        @Html.DisplayFor(modelUser => user.FirstName) 
+                    </td>
+                    <td class="col-md-3">
+                        @Html.DisplayFor(modelUser => user.LastName) 
+                    </td>
+                    <td class="col-md-3">
+                        @Html.DisplayFor(modelUser => user.Email)
+                    </td>
+                    <td class="col-md-3">
+                        @if (user.UserBlocked)
+                        {
+                            <p style="color: red;">Deze gebruiker is geblokkeerd!</p>                                                      
+                        }
+                    </td>
+                </tr>                
+            
+        </tbody>
+        }
+    </table>
+    
+</div>

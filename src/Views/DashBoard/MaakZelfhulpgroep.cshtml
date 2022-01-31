@@ -1,0 +1,44 @@
+@model Chat
+        <div class="col-md-6 mx-auto">
+            <form asp-action="CreateRoom">
+        <table>
+                <tbody>
+                <tr>
+                    <td><label for="NaamInputVeld">Naam van de groep</label></td>
+                    <td><input name="Naam" id="NaamInputVeld" type="text" placeholder="Naam groep" aria-label="zoek op naam van de Groep"/></td>
+                </tr>
+                <tr>
+                    <td><label for="BeschrijvingInputVeld">Beschrijving van de groep</label></td>
+                    <td><input name="Beschrijving" id="BeschrijvingInputVeld" type="text" placeholder="beschrijving groep" aria-label="zoek op de beschrijving van de groep"/></td>
+                </tr>
+                <tr>
+                    <td>
+                    <label asp-for="Onderwerp">Selecteer een Onderwerp</label></td> 
+                        <td>
+                            <select asp-for="Onderwerp" type="text">
+                            <option value="School">School</option>
+                            <option value="Depressief">Depressief</option>
+                            <option value="Slaaptekort">Slaaptekort</option>
+                            <option value="ADD">ADD</option>
+                            <option value="ADHD">ADHD</option>
+                            <option value="Traumas">Traumas</option>
+                            <option value="Autisme">Autisme</option>
+                        </select>
+                        </td>
+                </tr>
+                <tr>
+                <td><label asp-for="Leeftijdscategorie">Selecteer een leeftijdscategorie</label></td>
+                    <td><select asp-for="Leeftijdscategorie" type="text">
+                        <option value="-14">14 jaar of jonger</option>
+                        <option value="14-17">14 tot 17 jaar</option>
+                        <option value="18-21">18 tot 21 jaar</option>
+                        <option value="21+">21 jaar of ouder</option>
+                    </select>
+                    </td>
+                </tr>
+                </tbody>
+        </table>
+                <br/>
+                <input class="btn btn-success" type="submit" value="maak nieuwe groep aan">
+            </form>
+        </div>

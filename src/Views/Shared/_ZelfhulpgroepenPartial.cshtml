@@ -1,0 +1,15 @@
+<!--Hierzo misschien de 10 met de meeste deelnemers-->
+@model List<Chat>
+<div class="groups b-small">
+    @foreach (var chat in Model)
+    {
+    <div class="group row" >
+        <form action="Dashboard/Chat" method="get">
+            <input type="hidden" value="@chat.Id" name="ChatId"/>
+            <header>@chat.Naam</header>
+            <p>@chat.Beschrijving</p>
+            <input class="btn btn-primary" type="submit" value="ga naar chat" aria-label="ga naar de chat: @chat.Naam   ">
+        </form>
+    </div>
+    }
+</div>

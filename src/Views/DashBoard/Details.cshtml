@@ -1,0 +1,49 @@
+@model Chat
+
+<h1>Informatie over de chat</h1>
+<div class="row">
+    @if((bool)ViewData["IsPedagoog"]){
+    <form asp-action="Edit" method="get">
+        <input type="hidden" name="Id" value="@Model.Id">
+        <input class="btn btn-primary" type="Submit" value="Edit" aria-label="Bewerk de gegevens van de groep">
+    </form>
+    <form asp-action="DeleteRoom" method="get">
+        <input type="hidden" name="Id" value="@Model.Id">
+        <input class="btn btn-danger" type="Submit" value="Delete" aria-label="Verwijder de groep">
+    </form>
+    }
+    <form asp-action="RemoveRoomFromList" method="get">
+        <input type="hidden" name="Id" value="@Model.Id">
+        <input class="btn btn-danger" type="Submit" value="Verlaat groep">
+    </form>
+</div>
+
+<div>
+    <h2>Group</h2>
+    <hr />
+    <!-- hier nog beter naar kijken Dit werkt nog niet ten behoven-->
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Naam)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.Naam)
+        </dd>
+        </dl>
+        <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Beschrijving)
+        </dt>
+        <dd class = "col-sm-6">
+            @Html.DisplayFor(model => model.Beschrijving)
+        </dd>
+    </dl>
+        <dl class="row">
+            <dt class = "col-sm-2">
+                Aantal gebruikers
+            </dt>
+            <dd class = "col-sm-6">
+                @ViewData["Users"]
+            </dd>
+    </dl>
+</div>

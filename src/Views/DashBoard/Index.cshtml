@@ -1,0 +1,61 @@
+    @{
+    ViewData["Title"] = "Dashboard";
+    }
+    @model List<Chat>
+        <div class="container text-center">
+        <h1 class="text-center pt-2">Welkom in de Chat!</h1>    
+        <img src="~/img/balloons.jpg" class="waas img-fluid" aria-label="Chatballonnen">
+       @if((bool)ViewData["Success"]){
+        <div class="alert alert-success" role="alert">
+                @ViewData["SuccessMessage"]
+            </div>
+       }
+       @if((bool)ViewData["meldingGeplaatst"]){
+        <div class="alert alert-success" role="alert">
+            Uw melding is successvol geplaatst!
+        </div>
+}
+        <h2>Wat wilt u doen?</h2>
+        <div class="row">
+            <div class="mx-auto">
+            <a class="main-knop btn btn-outline-primary" asp-action="GroepToevoegen" aria-label="Een groep toevoegen aan uw lijst"> Groep toetreden</a>
+            @if((bool)ViewData["IsModerator"]){
+            <a class="main-knop btn btn-outline-primary" asp-action="MaakZelfhulpgroep" aria-label="Maak een nieuwe groep aan"> Groep aanmaken</a>
+            <a class="main-knop btn btn-outline-primary" asp-controller="Client" asp-action="Index" aria-label="Chats met Clienten">Chats met Clienten</a>
+            }else{
+            @if((bool)ViewData["HeeftPriveChat"]){
+            <a class="main-knop btn btn-outline-primary" asp-action="GaNaarPriveChat" aria-label="Ga naar de chat met jouw pedagoog">Chat met pedagoog</a>
+            }
+            }
+            @if(User.IsInRole("Moderator")){
+            <a class="main-knop btn btn-outline-primary" asp-controller="Melding" asp-action="Index" aria-label="Ga naar meldingen overzicht">Melding overzicht</a>
+            }
+            <a class="main-knop btn btn-outline-primary" asp-controller="Melding" asp-action="Create" aria-label="Maak een nieuwe melding">Melding maken</a>
+        </div>
+        </div>
+        <h3>Sorteer op categorie</h3>
+        <div class="row">
+            <div class="mx-auto">
+            <a class="main-knop btn btn-primary" asp-action="Index" asp-route-Onderwerp ="School" aria-label="Sorteren op school">School</a>
+            <a class="main-knop btn btn-secondary" asp-action="Index" asp-route-Onderwerp ="Depressief" aria-label="Sorteren op depressief">Depressief</a>
+            <a class="main-knop btn btn-success" asp-action="Index" asp-route-Onderwerp ="Slaaptekort" aria-label="Sorteren op slaaptekort">Slaaptekort</a>
+            <a class="main-knop btn btn-danger" asp-action="Index" asp-route-Onderwerp ="ADD" aria-label="Sorteren op ADD">ADD</a>
+            <a class="main-knop btn btn-warning" asp-action="Index" asp-route-Onderwerp ="ADHD" aria-label="Sorteren op ADHD">ADHD</a>
+            <a class="main-knop btn btn-info" asp-action="Index" asp-route-Onderwerp ="Traumas" aria-label="Sorteren op traumas">Traumas</a>
+            <a class="main-knop btn btn-dark" asp-action="Index" asp-route-Onderwerp ="Autisme" aria-label="Sorteren op autisme">Autisme</a>
+            </div>
+        </div>
+        <h3>Leeftijdscategorie</h3>
+        <div class="row">
+            <div class="mx-auto">
+                <a class="main-knop btn btn-primary" asp-action="Index" asp-route-Leeftijdscategorie = "-14" aria-label="Chats voor gebruikers jonger dan 14">14 jaar of jonger</a>
+                <a class="main-knop btn btn-primary" asp-action="Index" asp-route-Leeftijdscategorie = "14-17" aria-label="Chats voor gebruikers tussen de 14 en 17 jaar">14 tot 17 jaar</a>
+                <a class="main-knop btn btn-primary" asp-action="Index" asp-route-Leeftijdscategorie = "18-21" aria-label="Chats voor gebruikers tussen de 18 en 21 jaar">18 tot 21 jaar</a>
+                <a class="main-knop btn btn-primary" asp-action="Index" asp-route-Leeftijdscategorie = "21+" aria-label="Chats voor gebruikers ouder dan 21 jaar">Ouder dan 21 jaar</a>
+            </div>
+        </div>
+
+
+    <h3>Mijn chatgroepen</h3>
+        <partial name="_ZelfhulpgroepenPartial" model=@Model/> 
+</div>

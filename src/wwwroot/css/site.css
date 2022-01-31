@@ -1,0 +1,441 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+*{
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Provide sufficient contrast against white background */
+a {
+  color: #0366d6;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+}
+
+greenforrest {
+    color: #007a78
+}
+
+navyblue {
+    color: #1b365d
+}
+
+rainblue {
+    background-color: #7da1c4
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  color: white;
+  background-color: #1b6ec2;
+  border-color: #1861ac;
+  border-bottom: #2149C6 solid 2px;
+}
+.nav-link{
+  color: #2149C6;
+  border-color: #1861ac;
+}
+.menu{
+  border-bottom: #2149C6 solid 2px;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 160px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  white-space: nowrap;
+  line-height: 60px; /* Vertically center the text there */
+}
+
+/* Dit zijn zelf toegevoegde classes*/
+.begin_foto img{
+  position: absolute;
+  width: 100%;
+  height: 60%;
+  left: -0.86px;
+  object-fit: none;
+  top: auto;
+}
+.begin_foto h1{
+  background-color: white;
+  opacity: 0.7;
+  border-radius: 21px;
+  left:50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top:25%;
+  padding:5px;
+
+}
+.waas{
+  opacity: 0.5;
+  border-radius: 21px;
+}
+
+/*for Tab control*/
+div.login-logout-tab div.card.header {
+    padding: 0px 0px 12px 0px;
+}
+
+div.login-logout-tab li.nav-tabs {
+    margin: 0px 0px -12px 0px;
+}
+
+div.login-logout-tab li.nav-item {
+    width: 50%
+}
+
+div.login-logout-tab a.nav-link {
+    font-size: 25px;
+    color: #495057;
+    text-align: center;
+}  
+
+/* NavBar */
+
+.navbar .navbar-nav .nav-link {
+    color: #000000;
+    font-size: 1.1em;
+}
+
+    .navbar .navbar-nav .nav-link:hover {
+        color: #808080;
+    }
+
+.navbar-logo-centered .navbar-nav .nav-link {
+    padding: .5em 1em;
+}
+
+.groups{
+  border:solid black 2px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+
+  border-radius: 0.5rem;
+  margin-top: 0.25rem;
+}
+.group{
+  display: inline;
+  margin:0.25rem;
+  padding:0.25rem;
+  background-color: #d3d3d3;
+}
+.group:hover{
+  background-color:#929292;
+  color:black;
+}
+
+.main-knop{
+  margin: 0.25rem;
+  margin-left:0.5rem;
+}
+.filter-box{
+  border:solid black 2px;
+  padding:0.25rem;
+  margin:0.3rem;
+  border-radius: 0.25rem;
+}
+.join-link{
+    float: right;
+    font-size: medium;
+    display:inline-flex;
+}
+.join-link:hover{
+  color:blue;
+}
+.b-small{
+  height: 20rem;
+}
+.b-large{
+  height: 36rem;
+}
+
+/*dit zorgt ervoor dat de chat en de groepen naast elkaar komen te staan*/
+.main-chat{
+  border:solid black 2px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+.chat-groups{
+    overflow-x:auto;
+    overflow-y:hidden;
+    border:solid black 2px;
+    width: 100%;
+    min-width: 100px;
+    z-index: 50;
+    box-shadow: 1px 0 2px 0 #333;
+    display: flex;
+    flex-direction: row;
+}
+.room-button {
+  color: white;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.75rem 1rem 0;
+  height: 68px;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px 1px #333;
+  background-color: #57446b;
+  text-align: center;
+  min-width: 60px;
+}
+.room-button > strong {
+  font-size: 36px;
+}
+
+.room-button:hover {
+  box-shadow: 0 2px 3px 1px #222;
+}
+.chat {
+  flex-grow: 1;
+  display: inline;
+  overflow-x: hidden;
+  overflow-y:auto;
+  min-height: 4rem;
+  max-height: 10rem;
+  flex-direction: column;
+  max-height: 30rem;
+}
+
+.chat-body {
+  background-color: #eee;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1rem;
+  overflow-y: auto;
+  height: 80%;
+  max-height: 45rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.message {
+  display: flex;
+  flex-direction: row;
+  margin: 0.2rem;
+}
+
+.message:first-child {
+  margin-top: auto;
+}
+
+.message > * {
+  padding: 0.2rem;
+}
+
+.message > header {
+  font-weight: bold;
+  min-width: 100px;
+  text-align: right;
+}
+.message > p {
+  margin: 0;
+  flex-grow: 5;
+}
+.message > footer {
+  min-width: 60px;
+  text-align: center;
+}
+.chat-input{
+  position: sticky;
+  top:25rem;
+}
+.chat-input > form{
+  padding: 0.25rem;
+  margin:0.25rem;
+  display: flex;
+  flex-direction: row;
+}
+.chat-input >form> input{
+  max-width: 60rem;
+  margin:0.25rem;
+  padding:0.25rem;
+}
+.hidden{
+  display: none;
+}
+.online{
+  box-shadow:inset 0px 1px 0px 0px #caefab;
+	background:linear-gradient(to bottom, #77d42a 5%, #5cb811 100%);
+	background-color:#77d42a;
+	border-radius:6px;
+	border:1px solid #268a16;
+	display:inline-block;
+	cursor:pointer;
+	color: black;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:6px 24px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #aade7c;
+}
+.offline{
+    box-shadow:inset 0px 1px 0px 0px #f29c93;
+    background:linear-gradient(to bottom, #fe1a00 5%, #ce0100 100%);
+    background-color:#fe1a00;
+    border-radius:6px;
+    border:1px solid #d83526;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:15px;
+    font-weight:bold;
+    padding:6px 24px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px #b23e35;
+}
+@media only screen and (max-width:600px){
+  /*Dit werkt niet ten behoeve*/
+  .main-chat{
+    display: inline-flex;
+  }
+  .chat-groups{
+    display: none;
+  }
+}
+
+/* Large viewport navbar */
+.nav-link {
+  text-transform: uppercase;
+  border-bottom: 5px solid transparent;
+  height:100%
+}
+
+.nav-link:hover {
+  border-bottom: 5px solid #ff7240;
+}
+#dashboardoverzicht
+{
+  width: 50%;
+  margin: auto;
+  padding: 10px;
+}
+
+.acessibilidade {
+    font-size: inherit;
+}
+
+
+/* Cookies */ 
+
+.cookieConsentContainer {
+    z-index: 999;
+    width: 350px;
+    min-height: 20px;
+    box-sizing: border-box;
+    padding: 30px 30px 30px 30px;
+    background: #232323;
+    overflow: hidden;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: none;
+}
+
+    .cookieConsentContainer .cookieTitle a {
+        font-family: OpenSans, arial, "sans-serif";
+        color: #FFFFFF;
+        font-size: 22px;
+        line-height: 20px;
+        display: block;
+    }
+
+    .cookieConsentContainer .cookieDesc p {
+        margin: 0;
+        padding: 0;
+        font-family: OpenSans, arial, "sans-serif";
+        color: #FFFFFF;
+        font-size: 13px;
+        line-height: 20px;
+        display: block;
+        margin-top: 10px;
+    }
+
+    .cookieConsentContainer .cookieDesc a {
+        font-family: OpenSans, arial, "sans-serif";
+        color: #FFFFFF;
+        text-decoration: underline;
+    }
+
+    .cookieConsentContainer .cookieButton a {
+        display: inline-block;
+        font-family: OpenSans, arial, "sans-serif";
+        color: #FFFFFF;
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 14px;
+        background: #000000;
+        box-sizing: border-box;
+        padding: 15px 24px;
+        text-align: center;
+        transition: background 0.3s;
+    }
+
+        .cookieConsentContainer .cookieButton a:hover {
+            cursor: pointer;
+            background: #3E9B67;
+        }
+
+
+
+@media (max-width: 980px) {
+
+    .cookieConsentContainer {
+        bottom: 0px !important;
+        left: 0px !important;
+        width: 100% !important;
+    }
+}

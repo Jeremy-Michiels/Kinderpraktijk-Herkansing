@@ -1,0 +1,40 @@
+@model Melding
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<div class="container">
+    <h1>Delete</h1>
+
+    <h3>Weet u zeker dat u dit bericht wilt verwijderen?</h3>
+    <div>
+        <h4>Melding</h4>
+        <hr />
+        <dl class="row">
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Titel)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Titel)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Bericht)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Bericht)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.Datum)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.Datum)
+            </dd>
+        </dl>
+        
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            <a asp-action="Index">Back to List</a>
+        </form>
+    </div>
+</div>

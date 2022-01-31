@@ -1,0 +1,109 @@
+@model Chat
+   <div class="alert alert-danger hidden" id="ErrorField" role="alert">
+        <a id="ErrorMessage"></a>
+    </div>
+    <div class="chat-body">
+    @if(Model!=null){
+        @foreach (var message in Model.Messages)
+        {
+            <div class="message">
+                <header>@message.Naam</header>
+                <p>@message.Text</p>
+                <footer>
+                    @message.timestamp.ToShortTimeString()
+                </footer>
+        </div>
+        }
+    }
+</div>
+<div class="chat-input">
+    <form onsubmit="sendMessage(event)" asp-controller="Home" asp-action="CreateMessage">
+    <input type="hidden" name="chatId" value="@Model.Id">
+    <input type="hidden" name="roomName" value="@Model.Naam">
+    <input type="text" name="Message" aria-label="Typ hier uw bericht">
+    <input type="submit" value="Verstuur bericht" />
+    </form>
+    </div>
+
+@section scripts{
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/messageBuilder.js"></script>
+<script>
+        //DIt is voor het aanmaken van een connectie met de ChatHub
+    //De naam van de Chathub is case sensitive
+    const connection = new signalR.HubConnectionBuilder()
+                                    .withUrl("https://localhost:5001/chathub")
+                                    .configureLogging(signalR.LogLevel.Information)
+                                    .build();
+
+        //In de methode hieronder wordt bij het ontvangen van een bericht het bericht toegevoegd aan de html
+    connection.on("ReceiveMessage", (data) => {
+        console.log("Data ontvangen "+ data.timestamp);
+        var message = messageBuilder()
+            .createMessage()
+            .withHeader(data.naam)
+            .withParagraph(data.text)
+            .withFooter(data.timestamp)
+            .build();
+        document.querySelector('.chat-body').append(message);
+    });
+
+        var _connectionId = '';
+
+        var joinroom = () =>{
+            var url = '/Chat/JoinRoom/' + _connectionId +'/@Model.Naam';
+            axious.post(url,null)
+                .then(res => {
+                    console("Room Joined!", res);
+                })
+                .catch(err => {
+                    showError("Inloggen bij chat mislukt");
+                    console.err("Failed to join Room!", res);
+                })
+        }
+
+    async function start() {
+        try {
+            await connection.start();
+            console.log("SignalR Connected.");
+        } catch (err) {
+            console.log(err);
+            setTimeout(start, 5000);
+        }
+    };
+
+    connection.onclose(async () => {
+        await start();
+    });
+
+    // Start the connection.
+    start();
+
+    var form = null;
+
+    //hier wordt de hele form uit de html gepakt door gerbruik van onsubmit
+     var sendMessage = function (event) {
+        event.preventDefault();
+
+        var data = new FormData(event.target);
+        console.log(data.timestamp);
+        //Hieronder wordt de data gepost naar de method in chatController.cs
+        axios.post('/Chat/SendMessage',data)
+            .then(res => {
+                console.log("Message send!")
+            })
+            .catch(err => {
+                showError("Bericht verzenden mislukt");
+                console.log("Iets ging fout!")
+            })
+    }
+        function showError(message){
+         //Dit zorgt ervoor dat er een error wordt geprint als het fout gaat
+         var element = document.getElementById("ErrorField");
+        var errorMessage = document.getElementById("ErrorMessage");
+        element.classList.remove("hidden");
+        errorMessage.innerHTML = message;
+    }
+</script>
+}

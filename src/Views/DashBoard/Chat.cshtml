@@ -31,7 +31,9 @@
     }
 </div>
 @if (User.IsInRole("Assistent"))
-{}
+{            
+    
+}
 else{
 <div class="chat-input">
     <form onsubmit="sendMessage(event)" asp-controller="Chat" asp-action="CreateMessage" method="post">

@@ -7,6 +7,7 @@ public class MijnContext : IdentityDbContext<srcUser>{
     public MijnContext(DbContextOptions<MijnContext> options) : base(options)
     {
     }
+    public DbSet<Afspraak> Afspraken{get; set;}
     public DbSet<Chat> Chat {get;set;}
     public DbSet<Message> Messages {get;set;}
     public DbSet<ChatUser> ChatUsers{get;set;}

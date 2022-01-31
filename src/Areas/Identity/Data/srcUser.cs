@@ -57,8 +57,6 @@ public class srcUser : IdentityUser
     
     [ForeignKey("srcUser")]
     [Column(TypeName = "nvarchar(450)")]
-    public string AssistentId {get; set;}
-    public srcUser Assistent{get; set;}
 
 
     public ICollection<srcUser> Childeren { get; set;}

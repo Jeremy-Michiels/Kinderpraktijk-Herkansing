@@ -42,6 +42,7 @@ public class DashboardController : Controller{
         //Hier wordt meegegeven of de user een moderator is.
         //op basis hiervan wordt bepaald of de user te zien krijgt of hij een groep aan mag maken of dat hij kan chatten met de pedagoog
         ViewData["IsModerator"] = User.IsInRole("Moderator")||User.IsInRole("Pedagoog");
+        ViewData["IsAssistent"] = User.IsInRole("Assistent");
         //Onderstaande viewdata is voor het weergeven van de button
         ViewData["HeeftPriveChat"] = heeftPriveChat();
         

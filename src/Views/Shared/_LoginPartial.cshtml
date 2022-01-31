@@ -52,6 +52,22 @@
             </ul>
             </div>
         }
+        else if(User.IsInRole("Assistent"))
+        {
+            <div class="dropdown">
+                <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Hello @User.Identity?.Name!
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <li><a class="dropdown-item" asp-area="Profile" asp-page="/Tabs/Profiel">Mijn Profiel</a></li>
+                <li><a class="dropdown-item" href="/Dashboard">Chat</a></li>
+                <li><a class="dropdown-item" asp-area="Profile" asp-page="/Tabs/ClientenOverzicht">Overzicht van al uw clienten</a></li>
+                <li><a class="dropdown-item" asp-area="Profile" asp-page="/Tabs/ViewSpecialist">Overzicht Specialisten</a></li>
+                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Manage Gegevens</a></li>
+            </ul>
+            </div>
+        }
+        
         else
         {
             <div class="dropdown">

@@ -47,10 +47,11 @@ namespace src.Areas.Profile.Pages.Tabs
         {
             //Als er een filter functie is deze aanpassen
             var currentUserId = _userManager.GetUserId(User);
+            var currentUser = await _context.Users.Where(x => x.Id == currentUserId).FirstOrDefaultAsync();
             SetCurrentUser(currentUserId);
             //Hiermee wordt een lijst met de actieve aanmeldingen gegenereerd
             //Daarvoor moet je de speciale FilterList aanroepe
-            if(User.IsInRole("Pedagoog")){
+            if(User.IsInRole("Pedagoog") || User.IsInRole("Assistent")){
                 Aanmeldingen = GetAanmeldingen(currentUserId).ToList();
             }else{
                 Aanmeldingen = GetFilters(GetAanmeldingen(),aan,af).ToList();

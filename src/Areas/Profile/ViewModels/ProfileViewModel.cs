@@ -25,5 +25,7 @@ namespace src.Areas.Profile.ViewModels
         public string PhoneNumber { get; set; }
         public string Specialism { get; set; }
         public string Description { get; set; }
+        public string SpecialistId{get; set;}
+        
     }
 }

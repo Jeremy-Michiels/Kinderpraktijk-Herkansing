@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using src.Areas.Identity.Data;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
@@ -19,8 +18,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace src.Areas.Profile.Pages.Tabs
 {
-    [Authorize(Roles = "Client, Ouder, Moderator, Pedagoog, Assistent")]
-    public class AanmeldenModel : PageModel
+    [Authorize(Roles = "Pedagoog")]
+    public class AssistentAanmeldenModel : PageModel
     {
         private MijnContext _context;
         private readonly SignInManager<srcUser> _signInManager;
@@ -30,7 +29,7 @@ namespace src.Areas.Profile.Pages.Tabs
         private readonly ILogger<AanmeldenModel> _logger;
         private readonly IEmailSender _emailSender;
 
-        public AanmeldenModel(
+        public AssistentAanmeldenModel(
             UserManager<srcUser> userManager,
             IUserStore<srcUser> userStore,
             SignInManager<srcUser> signInManager,
@@ -52,7 +51,7 @@ namespace src.Areas.Profile.Pages.Tabs
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
         [BindProperty]
-        public InputModel2 Input { get; set; }
+        public InputModel3 Input { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -70,7 +69,7 @@ namespace src.Areas.Profile.Pages.Tabs
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
         /// </summary>
-        public class InputModel2
+        public class InputModel3
         {
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -89,23 +88,17 @@ namespace src.Areas.Profile.Pages.Tabs
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
-            public string Password { get; set; }
+            public string Password { get; set; } = "Assistent12!";
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-            public string ConfirmPassword { get; set; }
-
             [Required]
             [StringLength(50)]
             [DataType(DataType.Text)]
             [Display(Name = "Voornaam")]
             public string FirstName { get; set; }
-
             [Required]
             [StringLength(50)]
             [DataType(DataType.Text)]
@@ -118,16 +111,13 @@ namespace src.Areas.Profile.Pages.Tabs
             public DateTime Age { get; set; }
 
             [Required]
-            [StringLength(50)]
-            [Display(Name = "IBAN")]
-            public string IBAN { get; set; }
-            
-            [Required]
-            [Display(Name = "BSN")]
-            public string BSN { get; set; }
+            [StringLength(450)]
+            [DataType(DataType.Text)]
+            [Display(Name = "Beschrijving")]
+            public string Description { get; set; }
 
+            public string SpecialistId {get; set;}
 
-            public string ParentId { get; set; }
         }
 
 
@@ -143,17 +133,7 @@ namespace src.Areas.Profile.Pages.Tabs
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                //var user = CreateUser();
-                var user = new srcUser
-                {
-                      FirstName = Input.FirstName,
-                        LastName = Input.LastName,
-                        Age = Input.Age,
-                        Email = Input.Email,
-                        IBAN = Input.IBAN,
-                        BSN = Input.BSN,
-                    ParentId = _userManager.GetUserId(User)
-            };
+                var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 //await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -162,10 +142,13 @@ namespace src.Areas.Profile.Pages.Tabs
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    if(await SetRoleAsync(user)){
+                    if (await SetRoleAsync(user))
+                    {
                         _logger.LogInformation("Role has been added to the User.");
-                    }else{
-                         _logger.LogInformation("Adding role to user failed.");
+                    }
+                    else
+                    {
+                        _logger.LogInformation("Adding role to user failed.");
                     }
 
 
@@ -187,8 +170,7 @@ namespace src.Areas.Profile.Pages.Tabs
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        return RedirectToPage("/Tabs/AssistentOverzicht", new { Area = "Profile" });
                     }
                 }
                 foreach (var error in result.Errors)
@@ -200,16 +182,26 @@ namespace src.Areas.Profile.Pages.Tabs
             // If we got this far, something failed, redisplay form
             return Page();
         }
-        public async Task<bool> SetRoleAsync(srcUser user){
-             await _userManager.AddToRoleAsync(user,"Client");
-            return  await _userManager.IsInRoleAsync(user,"Client");
+        public async Task<bool> SetRoleAsync(srcUser user)
+        {
+            await _userManager.AddToRoleAsync(user, "Assistent");
+            return await _userManager.IsInRoleAsync(user, "Assistent");
         }
 
-        private srcUser CreateUser()
+        public  srcUser CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<srcUser>();
+                return new srcUser
+                {
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    Age = Input.Age,
+                    Email = Input.Email,
+                    Description = Input.Description,
+                    SpecialistId = _userManager.GetUserId(User)
+                    
+                };
             }
             catch
             {
@@ -229,4 +221,3 @@ namespace src.Areas.Profile.Pages.Tabs
         }
     }
 }
-

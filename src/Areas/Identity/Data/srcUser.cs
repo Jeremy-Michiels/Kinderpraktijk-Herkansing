@@ -54,6 +54,13 @@ public class srcUser : IdentityUser
     [Display(Name = "BSN")]
     public string BSN { get; set; }
 
+    
+    [ForeignKey("srcUser")]
+    [Column(TypeName = "nvarchar(450)")]
+    public string AssistentId {get; set;}
+    public srcUser Assistent{get; set;}
+
+
     public ICollection<srcUser> Childeren { get; set;}
     public ICollection<srcUser> Clients { get; set; }
     public ICollection<ChatUser> Chats{get;set;}

@@ -10,12 +10,12 @@
             <h1>Nieuwe Afspraak</h1>
             <form class="add-post-form">
                 <div class="form-group">
-                    <label for="Datum">Vanaf</label>
-                    <input type="datetime-local" class="form-control" id="Datum-value">
+                    <label for="datum">Vanaf</label>
+                    <input type="datetime-local" class="form-control" id="datum-value"/>
                 </div>
                 <div class="form-group">
-                    <label for="Datum2">Tot</label>
-                    <input type="datetime-local" class="form-control" id="Datum-value2">
+                    <label for="EindDatum">Tot</label>
+                    <input type="datetime-local" class="form-control" id="EindDatum.value"/>
                 </div>
                 <div class="form-group">
                     <label for="Client">Client</label>
@@ -27,26 +27,50 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="Beschrijving">Beschrijving</label>
-                    <textarea type="text" class="form-control" id="Beschrijving"></textarea>
+                    <label for="Specialist" >Specialist</label>
+                    <input type="text" id = "Specialist-value" value='4ecdee9c-0cf3-406a-b7d1-eb24acff2136'/>
                 </div>
-                <button type="submit" class="btn btn-primary">Voeg toe</button>
+                <div class="form-group">
+                    <label for="Beschrijving">Beschrijving</label>
+                    <input type="text" class="form-control" id="Beschrijving-value" value="iets">
+                </div>
+                <button type="submit" onclick="dataNaarApi()"  class="btn btn-primary">Voeg toe</button>
             </form>
         </div>
     </div>
+    <div class="row mt-3" id="iets">
+
+    </div>
 </div>
 <script>
+async function postData(url = '', data = {}) {
+         // Default options are marked with *
+            const response = await fetch(url, {
+                method: 'POST', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+                body: JSON.stringify(data) // body data type must match "Content-Type" header
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+            }
 
 
-    const url = "localhost:5001/Api/Afspraak"
-    const output = ''
-
-
-
-    fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            data.forEach(post => {
+    console.log("TimeStamp 1");
+    const postsList = document.getElementById('iets')
+    let output = '';
+    const addPostForm = document.querySelector('.add-post-form')
+    
+    console.log("Timestamp 2");
+    const renderPosts = (posts) => 
+    {
+            posts.forEach(post => {
                 output+=`
                 <div class="card mt-4 col-md-6 bg-ligt">
                     <div class="card-body">
@@ -57,9 +81,41 @@
                     </div>
                 </div>
                 `;
-            })
-        })
-        
+            });
+            postsList.innerHTML = output;
+    }
+    console.log("TimeStamp 3");
+
+//get fetch
+    fetch('https://localhost:5001/Api/Afspraak')
+        .then(res => res.json())
+        .then(data => renderPosts(data))
+
+        console.log("TimeStamp 4");
+        //create of post fetch
+        console.log(document.getElementById('datum-value').value)
+        console.log(document.getElementById('EindDatum.value').value)
+        console.log(document.getElementById('Client-value').value)
+        console.log(document.getElementById('Specialist-value').value)
+        console.log(document.getElementById('Beschrijving-value').value)
+        function dataNaarApi(){
+                postData('https://localhost:5001/Api/Afspraak', {
+                    "datum": document.getElementById('datum-value').value,
+                    "EindDatum": document.getElementById('EindDatum.value').value,
+                    "ClientId": document.getElementById('Client-value').value,
+                    "PedagoogId": document.getElementById('Specialist-value').value,
+                    "Beschrijving": document.getElementById('Beschrijving-value').value,
+                    })
+                .then(data => {
+                    console.log(document.getElementById('datum-value').value)
+                    console.log(document.getElementById('EindDatum.value').value)
+                    console.log(document.getElementById('Client-value').value)
+                    console.log(document.getElementById('Specialist-value').value)
+                    console.log(document.getElementById('Beschrijving-value').value)
+                    console.log(data); // JSON data parsed by `data.json()` call
+                });
+                }
+
 
 
 </script>

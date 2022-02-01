@@ -27,7 +27,13 @@ namespace src.Controllers
         {
             var currentUserId = _userManager.GetUserId(User);
             var currentUser = _context.Users.Where(x => x.Id == currentUserId).SingleOrDefault();
+            if(User.IsInRole("Assistent")){
+                currentUser = _context.Users.Where(x => x.Id == currentUser.SpecialistId).SingleOrDefault();
+            }
             var mijnContext = _context.Users.Where(x => x.SpecialistId == currentUser.Id);
+            ViewData["Active"] = currentUser.Id;
+            if(User.IsInRole("Assistent"))
+            ViewData["Active"] = currentUser.SpecialistId;
 
             return View(await mijnContext.ToListAsync());
         }

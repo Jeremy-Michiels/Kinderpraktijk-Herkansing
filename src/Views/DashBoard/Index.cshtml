@@ -19,8 +19,10 @@
         <div class="row">
             <div class="mx-auto">
             <a class="main-knop btn btn-outline-primary" asp-action="GroepToevoegen" aria-label="Een groep toevoegen aan uw lijst"> Groep toetreden</a>
-            @if((bool)ViewData["IsModerator"]){
+            @if((bool)ViewData["IsModerator"] || (bool)ViewData["IsAssistent"]){
+                @if((bool)ViewData["IsModerator"]){
             <a class="main-knop btn btn-outline-primary" asp-action="MaakZelfhulpgroep" aria-label="Maak een nieuwe groep aan"> Groep aanmaken</a>
+                }
             <a class="main-knop btn btn-outline-primary" asp-controller="Client" asp-action="Index" aria-label="Chats met Clienten">Chats met Clienten</a>
             }else{
             @if((bool)ViewData["HeeftPriveChat"]){

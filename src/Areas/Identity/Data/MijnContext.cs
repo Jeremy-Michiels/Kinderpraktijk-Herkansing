@@ -7,6 +7,7 @@ public class MijnContext : IdentityDbContext<srcUser>{
     public MijnContext(DbContextOptions<MijnContext> options) : base(options)
     {
     }
+    public DbSet<Afspraak> Afspraken{get; set;}
     public DbSet<Chat> Chat {get;set;}
     public DbSet<Message> Messages {get;set;}
     public DbSet<ChatUser> ChatUsers{get;set;}
@@ -32,5 +33,14 @@ public class MijnContext : IdentityDbContext<srcUser>{
                     .HasOne(x=>x.Pedagoog)
                     .WithMany(x=>x.AanmeldingPedagoog)
                     .HasForeignKey(x=>x.PedagoogId);
+        builder.Entity<Afspraak>()
+                    .HasOne(x => x.Client)
+                    .WithMany(x => x.AfsprakenClient)
+                    .HasForeignKey(x => x.ClientId);
+        builder.Entity<Afspraak>()
+                    .HasOne(x => x.Pedagoog)
+                    .WithMany(x => x.AfsprakenPedagoog)
+                    .HasForeignKey(x => x.PedagoogId);
+
     }
 }

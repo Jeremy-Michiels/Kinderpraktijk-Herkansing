@@ -32,8 +32,7 @@ namespace src
 
             //Hier Halen wij de naam van de database uit de Usersecrets
             services.AddDbContext<MijnContext>(o=>
-                        o.UseSqlServer("Server=tcp:kinderpraktijkhij2.database.windows.net,1433;Initial Catalog=kinderpraktijkhij2;Persist Security Info=False;User ID=KinderpraktijkHij;Password=J0eBiden!123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
-                        //o.UseSqlite("Data Source=database.db"));
+                        o.UseSqlite("Data Source=database.db"));
             
             //dit is nodig voor de identity
             services.AddIdentity<srcUser, IdentityRole>()
@@ -68,8 +67,8 @@ namespace src
                 options.AddDefaultPolicy(builder =>
                 {
                     //dit moet later ook terug veranderd worden naar de website die gebruikt gaat worden
-                    builder.WithOrigins("https://kinderpraktijkhij2.azurewebsites.net")
-                    //builder.WithOrigins("https://localhost:5001/")
+                    //builder.WithOrigins("https://kinderpraktijkhij2.azurewebsites.net")
+                    builder.WithOrigins("https://localhost:5001")
                             .AllowCredentials();
                 })
             );

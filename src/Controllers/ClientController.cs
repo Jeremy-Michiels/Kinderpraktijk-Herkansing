@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
-[Authorize(Roles = "Pedagoog , Moderator")]
+[Authorize(Roles = "Pedagoog , Moderator, Assistent")]
 public class ClientController: Controller{
 private MijnContext _context;
   private srcUser _currentUser;
+  private UserManager<srcUser> _userManager;
  public srcUser currentUser 
  {
     get { 
@@ -23,14 +25,17 @@ private MijnContext _context;
     set { _currentUser = value;}
  }
     
-    public ClientController(MijnContext context){
+    public ClientController(MijnContext context, UserManager<srcUser> userManager){
         _context =context;
+        _userManager = userManager;
     }
 
     public ActionResult Index(string zoek){
-        //hiermee worden alle privé chats toegevoegd
+        
         ViewData["ZoekTerm"] = zoek;
+        //hiermee worden alle privé chats toegevoegd
         return View(ZoekOp(GetClients(),zoek).ToList());
+        
     }
     public IQueryable<Chat> ZoekOp(IQueryable<Chat> lijst, string trefwoord){
         if(trefwoord==null||trefwoord==""){
@@ -42,6 +47,13 @@ private MijnContext _context;
          //Hier in de list wordt gekeken of de users in de chat zitten.
         //dan wordt gekeken of de chat een private chat is
         var CurrentUser =User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if(User.IsInRole("Assistent")){
+                var currentUserId = _userManager.GetUserId(User);
+                var currentUser = _context.Users.Where(x => x.Id == currentUserId).SingleOrDefault();
+                var NaarSpecialist = currentUser.SpecialistId;
+                
+                CurrentUser = _context.Users.Where(x => x.Id == NaarSpecialist).Select(x => x.Id).SingleOrDefault();
+            }
         return _context.ChatUsers.Include(x=>x.chat)
                                                                         .Where(x=>x.UserId==CurrentUser)
                                                                         .Select(x=>x.chat)

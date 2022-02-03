@@ -6,6 +6,7 @@ using System.Linq;
 using src.Areas.Profile.Pages.Tabs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
 
 namespace tests
 {
@@ -17,20 +18,22 @@ namespace tests
             return m.CreateContext();
         }
 
-        private ClientenOverzichtModel getController(MijnContext context,string roleClaim,string ClaimTypeId)
+        private ClientenOverzichtModel getController(MijnContext context,string roleClaim,string ClaimTypeId, UserManager<srcUser> userManager)
         {
             var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[]
             {
                 new Claim(ClaimTypes.Role, roleClaim),
                 new Claim(ClaimTypes.NameIdentifier,ClaimTypeId)
             }, "mock"));
-            var controller = new ClientenOverzichtModel(context);
+            var controller = new ClientenOverzichtModel(context, userManager);
             controller.PageContext = new Microsoft.AspNetCore.Mvc.RazorPages.PageContext()
             {
                 HttpContext = new DefaultHttpContext() { User = user }
             };
             return controller;
         }
+
+        private readonly UserManager<srcUser> userManager;
 
         // Dit test of dat de lijst die wordt meegegeven bij de onget niet leeg is
         // Ook wordt er getest of dat alle users die in de lijst zitten de specialistId hebben van de huidige pedagoog
@@ -41,7 +44,7 @@ namespace tests
             var roleClaim = "Admin";
             var ClaimTypeId = "User5";
             MijnContext context = GetDatabase();
-            ClientenOverzichtModel controller = getController(context, roleClaim, ClaimTypeId);
+            ClientenOverzichtModel controller = getController(context, roleClaim, ClaimTypeId, userManager);
 
             //Act
             controller.OnGet();

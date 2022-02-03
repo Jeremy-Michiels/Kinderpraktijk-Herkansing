@@ -42,6 +42,7 @@ public class DashboardController : Controller{
         //Hier wordt meegegeven of de user een moderator is.
         //op basis hiervan wordt bepaald of de user te zien krijgt of hij een groep aan mag maken of dat hij kan chatten met de pedagoog
         ViewData["IsModerator"] = User.IsInRole("Moderator")||User.IsInRole("Pedagoog");
+        ViewData["IsAssistent"] = User.IsInRole("Assistent");
         //Onderstaande viewdata is voor het weergeven van de button
         ViewData["HeeftPriveChat"] = heeftPriveChat();
         
@@ -103,7 +104,7 @@ public class DashboardController : Controller{
 
     //Deze is voor de chat zelf. Hiermee kan je alle berichten zien
     [HttpGet]
-    [Authorize(Roles = "Moderator,Pedagoog,Client")]
+    [Authorize(Roles = "Moderator,Pedagoog,Client, Assistent")]
     public IActionResult Chat(int ChatId){
         if(UserIsIn(ChatId)){
             ViewData["IsModerator"] = User.IsInRole("Moderator")||User.IsInRole("Pedagoog");
@@ -290,6 +291,6 @@ public class DashboardController : Controller{
         //Hier wordt de current user opgevraagd
         var CurrentUser =User.FindFirst(ClaimTypes.NameIdentifier).Value;
         //hieronder wordt gekeken of de user in de lijst zit van alle users van de aangegeven chat
-        return _context.ChatUsers.Where(x=>x.ChatId==ChatId).Any(x=>x.UserId==CurrentUser);
+        return _context.ChatUsers.Where(x=>x.ChatId==ChatId).Any(x=>x.UserId==CurrentUser) || User.IsInRole("Assistent");
     }
 }

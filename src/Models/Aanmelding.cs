@@ -6,6 +6,8 @@ public class Aanmelding{
     public srcUser Client {get;set;}
     public string PedagoogId{get;set;}
     public srcUser Pedagoog {get;set;}
+    public string AssistentId{get; set;}
+    public srcUser Assistent{get; set;}
     public bool IsAangemeld{get;set;}
     public bool IsAfgemeld{get;set;}
     public DateTime AanmeldingDatum { get; set; }

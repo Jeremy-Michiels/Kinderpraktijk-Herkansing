@@ -77,17 +77,26 @@ namespace src.Controllers
         public async Task<ActionResult<Afspraak>> PostAfspraak([Bind("datum, EindDatum, ClientId, PedagoogId, Beschrijving")]Afspraak afspraak)
         {
             System.Console.WriteLine("Dit is een test");
+            bool iets = true;
             foreach(var i in _context.Afspraken){   
+                if(i.PedagoogId == afspraak.PedagoogId){
+                    Console.WriteLine(i.datum);
+                    Console.WriteLine(i.Einddatum);
+                    Console.WriteLine(afspraak.datum);
+                    Console.WriteLine(afspraak.Einddatum);
 
                 //Deze regel zorgt ervoor dat een afspraak niet gemaakt kan worden als dezelfde orthopedagoog op hetzelfde tijdstip een afspraak heeft
-                /*if(i.Pedagoog != afspraak.Pedagoog || !((i.datum < afspraak.datum&& i.Einddatum < afspraak.datum && i.Einddatum < afspraak.datum && i.Einddatum < afspraak.Einddatum)||(i.datum > afspraak.datum && i.datum > afspraak.Einddatum && i.Einddatum > afspraak.datum && i.Einddatum > afspraak.Einddatum))){
-                    return NoContent();
-                }*/
-            }
+                if((DateTime.Compare(i.datum, afspraak.datum) >= 0 && DateTime.Compare(i.datum, afspraak.Einddatum) <= 0) ||(DateTime.Compare(i.Einddatum, i.datum) >= 0 && DateTime.Compare(i.Einddatum, i.datum) <= 0)|| (DateTime.Compare(i.datum, afspraak.datum) <= 0 && DateTime.Compare(i.Einddatum, afspraak.Einddatum) >= 0) || (DateTime.Compare(i.datum, afspraak.datum) >= 0 && DateTime.Compare(i.Einddatum, i.Einddatum) <= 0)){
+                    iets = false;
+            }}}
+            if(iets == true){
             _context.Afspraken.Add(afspraak);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAfspraak", new { id = afspraak.Id }, afspraak);
+            return CreatedAtAction("GetAfspraak", new { id = afspraak.Id }, afspraak);}
+            else{
+                return NoContent();
+            }
         }
 
         // DELETE: api/Afspraak/5

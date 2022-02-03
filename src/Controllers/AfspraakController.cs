@@ -80,10 +80,6 @@ namespace src.Controllers
             bool iets = true;
             foreach(var i in _context.Afspraken){   
                 if(i.PedagoogId == afspraak.PedagoogId){
-                    Console.WriteLine(i.datum);
-                    Console.WriteLine(i.Einddatum);
-                    Console.WriteLine(afspraak.datum);
-                    Console.WriteLine(afspraak.Einddatum);
 
                 //Deze regel zorgt ervoor dat een afspraak niet gemaakt kan worden als dezelfde orthopedagoog op hetzelfde tijdstip een afspraak heeft
                 if((DateTime.Compare(i.datum, afspraak.datum) >= 0 && DateTime.Compare(i.datum, afspraak.Einddatum) <= 0) ||(DateTime.Compare(i.Einddatum, i.datum) >= 0 && DateTime.Compare(i.Einddatum, i.datum) <= 0)|| (DateTime.Compare(i.datum, afspraak.datum) <= 0 && DateTime.Compare(i.Einddatum, afspraak.Einddatum) >= 0) || (DateTime.Compare(i.datum, afspraak.datum) >= 0 && DateTime.Compare(i.Einddatum, i.Einddatum) <= 0)){

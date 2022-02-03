@@ -27,8 +27,13 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="Specialist" >Specialist</label>
-                    <input type="text" id = "Specialist-value" value='4ecdee9c-0cf3-406a-b7d1-eb24acff2136'/>
+                    @if(User.IsInRole("Assistent")){
+                    <input type="hidden" id = "Specialist-value" value="@Model.Where(x => x.UserName == User.Identity.Name).Select(x => x.SpecialistId).SingleOrDefault()">
+                    }
+                    else
+                    {
+                    <input type="hidden" id = "Specialist-value" value="@Model.Where(x => x.UserName == User.Identity.Name).Select(x => x.Id).SingleOrDefault()"> 
+                    }
                 </div>
                 <div class="form-group">
                     <label for="Beschrijving">Beschrijving</label>
@@ -38,10 +43,82 @@
             </form>
         </div>
     </div>
-    <div class="row mt-3" id="iets">
 
-    </div>
 </div>
+<div class="container">
+    <div class="row mt-3">
+        <div class="col">
+            @DateTime.Now.ToString("dd/MM/yyyy")
+        </div>
+        <div class="col">
+            @DateTime.Today.AddDays(1).ToString("dd/MM/yyyy")
+        </div>
+        <div class="col">
+            @DateTime.Today.AddDays(2).ToString("dd/MM/yyyy")
+        </div>
+        <div class="col">
+            @DateTime.Today.AddDays(3).ToString("dd/MM/yyyy")
+        </div>
+        <div class="col">
+            @DateTime.Today.AddDays(4).ToString("dd/MM/yyyy")
+        </div>
+        <div class="col">
+            @DateTime.Today.AddDays(5).ToString("dd/MM/yyyy")
+        </div>
+        <div class="col">
+            @DateTime.Today.AddDays(6).ToString("dd/MM/yyyy")
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col" id="Vandaag" class="text-center">
+        </div>
+        <div class="col" id="Morgen" class="text-center">
+
+        </div>
+        <div class="col" id="Overmorgen" class="text-center">
+
+        </div>
+        <div class="col" id="driedagen" class="text-center">
+
+        </div>
+        <div class="col" id="vierdagen" class="text-center">
+
+        </div>
+        <div class="col" id="vijfdagen" class="text-center">
+
+        </div>
+        <div class="col" id="zesdagen" class="text-center">
+
+        </div>
+    </div>
+        <div class="row mt-3" id="iets">
+            <h7> Andere afspraken</h7>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
 async function postData(url = '', data = {}) {
          // Default options are marked with *
@@ -61,28 +138,112 @@ async function postData(url = '', data = {}) {
             return response.json(); // parses JSON response into native JavaScript objects
             }
 
-
     console.log("TimeStamp 1");
     const postsList = document.getElementById('iets')
     let output = '';
+    let restant = '';
     const addPostForm = document.querySelector('.add-post-form')
+    datesAreOnSameDay = (first, second) => {
+        //methode checkt of de 2 datums hetzelfde zijn
+    const ietsje = second.toString();
+    //array die het formaat uit de database vergelijkbaar maakt
+    const woorden = ietsje.split("-");
+    woorden[2] = (woorden[2].split("T"))[0];
+    //formaat van datum van vandaag goedzetten
+    let maand = first.getMonth()
+    let dag = first.getDate().toString()
+    if(first.getMonth() < 10){
+        maand = "0" + (maand + 1);
+    }
+    maands = maand.toString()
+    if(first.getDate() < 10){
+        dag = "0" + dag
+    }
+
+
+
+
+
+
+
+    console.log("Datum")
+    console.log(first.getFullYear().toString())
+    console.log(woorden[0])
+    console.log(maands)
+    console.log(woorden[1])
+    console.log(dag)
+    console.log(woorden[2])
+    return first.getFullYear().toString() == woorden[0] &&
+    maands == woorden[1] &&
+    dag == woorden[2];
+
+    }
+
+
+
     
+    console.log
     console.log("Timestamp 2");
+    const nu = new Date();
+    const morgen = new Date(nu);
+    morgen.setDate(morgen.getDate() + 1);
+    const overmorgen = new Date(morgen);
+    overmorgen.setDate(overmorgen.getDate() + 1);
+    const driedagen = new Date(overmorgen)
+    driedagen.setDate(driedagen.getDate() + 1)
+    const vierdagen = new Date(driedagen);
+    vierdagen.setDate(vierdagen.getDate() + 1)
+    const vijfdagen = new Date(vierdagen);
+    vijfdagen.setDate(vijfdagen.getDate() + 1)
+    const zesdagen = new Date(vijfdagen);
+    zesdagen.setDate(zesdagen.getDate() + 1)
+    const zevendagen = new Date(zesdagen);
+    zevendagen.setDate(zevendagen.getDate() + 1);
     const renderPosts = (posts) => 
     {
             posts.forEach(post => {
-                output+=`
-                <div class="card mt-4 col-md-6 bg-ligt">
-                    <div class="card-body">
-                        <h5 class="card-title">${post.Client.Voornaam + " " + post.Client.Achternaam}</h5>
-                        <h6 class="card-subtitle mb-2">${post.datum + " tot " + post.EindDatum}</h6>
-                        <p class="card-text">${post.Beschrijving}</p>
-                        <a href="#" class="card-link">Delete</a>
+                
+                output =`
+                <div class="card col p-0 ml-0 bg-ligt">
+                    <div class="card-body" data-id=${post.id}>
+                        <h6 class="card-title">Client: ${post.clientId}</h5>
+                        <h6 class="card-subtitle mb-2">${post.datum} tot ${post.einddatum}</h6>
+                        <p class="card-text">${post.beschrijving}</p>
+                        <a href = "#" onClick="OnDelete(${post.id})" id=${post.id}class="card-link">Delete</a>
                     </div>
                 </div>
                 `;
+                
+                //check voor elke dag of die op dezelfde dag valt
+                if(datesAreOnSameDay(nu, post.datum)){
+                    document.getElementById("Vandaag").innerHTML += output
+                }
+                else if(datesAreOnSameDay(morgen, post.datum)){
+                    document.getElementById("Morgen").innerHTML += output
+                }
+                else if(datesAreOnSameDay(overmorgen, post.datum)){
+                    document.getElementById("Overmorgen").innerHTML += output
+                }
+                else if(datesAreOnSameDay(driedagen, post.datum)){
+                    document.getElementById("driedagen").innerHTML += output
+                }
+                else if(datesAreOnSameDay(vierdagen, post.datum)){
+                    document.getElementById("vierdagen").innerHTML += output
+                }
+                else if(datesAreOnSameDay(vijfdagen, post.datum)){
+                    document.getElementById("vijfdagen").innerHTML += output
+                }
+                else if(datesAreOnSameDay(zesdagen, post.datum)){
+                    document.getElementById("zesdagen").innerHTML += output
+                }
+                else{
+                    restant += output;
+                }
+
+
+                
             });
-            postsList.innerHTML = output;
+            postsList.innerHTML += restant;
     }
     console.log("TimeStamp 3");
 
@@ -91,14 +252,11 @@ async function postData(url = '', data = {}) {
         .then(res => res.json())
         .then(data => renderPosts(data))
 
+
         console.log("TimeStamp 4");
         //create of post fetch
-        console.log(document.getElementById('datum-value').value)
-        console.log(document.getElementById('EindDatum.value').value)
-        console.log(document.getElementById('Client-value').value)
-        console.log(document.getElementById('Specialist-value').value)
-        console.log(document.getElementById('Beschrijving-value').value)
         function dataNaarApi(){
+            event.preventDefault();
                 postData('https://localhost:5001/Api/Afspraak', {
                     "datum": document.getElementById('datum-value').value,
                     "EindDatum": document.getElementById('EindDatum.value').value,
@@ -106,15 +264,20 @@ async function postData(url = '', data = {}) {
                     "PedagoogId": document.getElementById('Specialist-value').value,
                     "Beschrijving": document.getElementById('Beschrijving-value').value,
                     })
+                .then(() => console.log("Data verzameld"))
                 .then(data => {
-                    console.log(document.getElementById('datum-value').value)
-                    console.log(document.getElementById('EindDatum.value').value)
-                    console.log(document.getElementById('Client-value').value)
-                    console.log(document.getElementById('Specialist-value').value)
-                    console.log(document.getElementById('Beschrijving-value').value)
                     console.log(data); // JSON data parsed by `data.json()` call
-                });
+                })
+                .then(() => location.reload())
                 }
+                function OnDelete(ding){
+                    console.log(ding)
+                    response = fetch("https://localhost:5001/Api/Afspraak/" + ding, {
+                method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
+        })
+        .then(() => location.reload())
+                }
+
 
 
 

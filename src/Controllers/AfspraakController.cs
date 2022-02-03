@@ -23,7 +23,7 @@ namespace src.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Afspraak>>> GetAfspraken()
         {
-            return await _context.Afspraken.ToListAsync();
+            return await _context.Afspraken.OrderBy(x => x.datum).ToListAsync();
         }
 
         // GET: api/Afspraak/5
@@ -74,14 +74,15 @@ namespace src.Controllers
         // POST: api/Afspraak
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Afspraak>> PostAfspraak(Afspraak afspraak)
+        public async Task<ActionResult<Afspraak>> PostAfspraak([Bind("datum, EindDatum, ClientId, PedagoogId, Beschrijving")]Afspraak afspraak)
         {
-            foreach(var i in _context.Afspraken){
+            System.Console.WriteLine("Dit is een test");
+            foreach(var i in _context.Afspraken){   
 
                 //Deze regel zorgt ervoor dat een afspraak niet gemaakt kan worden als dezelfde orthopedagoog op hetzelfde tijdstip een afspraak heeft
-                if(i.Pedagoog != afspraak.Pedagoog || !((i.datum < afspraak.datum&& i.Einddatum < afspraak.datum && i.Einddatum < afspraak.datum && i.Einddatum < afspraak.Einddatum)||(i.datum > afspraak.datum && i.datum > afspraak.Einddatum && i.Einddatum > afspraak.datum && i.Einddatum > afspraak.Einddatum))){
+                /*if(i.Pedagoog != afspraak.Pedagoog || !((i.datum < afspraak.datum&& i.Einddatum < afspraak.datum && i.Einddatum < afspraak.datum && i.Einddatum < afspraak.Einddatum)||(i.datum > afspraak.datum && i.datum > afspraak.Einddatum && i.Einddatum > afspraak.datum && i.Einddatum > afspraak.Einddatum))){
                     return NoContent();
-                }
+                }*/
             }
             _context.Afspraken.Add(afspraak);
             await _context.SaveChangesAsync();

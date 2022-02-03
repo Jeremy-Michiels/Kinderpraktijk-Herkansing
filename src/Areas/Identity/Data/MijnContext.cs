@@ -33,5 +33,14 @@ public class MijnContext : IdentityDbContext<srcUser>{
                     .HasOne(x=>x.Pedagoog)
                     .WithMany(x=>x.AanmeldingPedagoog)
                     .HasForeignKey(x=>x.PedagoogId);
+        builder.Entity<Afspraak>()
+                    .HasOne(x => x.Client)
+                    .WithMany(x => x.AfsprakenClient)
+                    .HasForeignKey(x => x.ClientId);
+        builder.Entity<Afspraak>()
+                    .HasOne(x => x.Pedagoog)
+                    .WithMany(x => x.AfsprakenPedagoog)
+                    .HasForeignKey(x => x.PedagoogId);
+
     }
 }

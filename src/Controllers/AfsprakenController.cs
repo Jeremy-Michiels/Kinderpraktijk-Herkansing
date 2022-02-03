@@ -27,8 +27,10 @@ namespace src.Controllers
         {
             var currentUserId = _userManager.GetUserId(User);
             var currentUser = _context.Users.Where(x => x.Id == currentUserId).SingleOrDefault();
+            ViewData["Peda"] = currentUser.Id;
             if(User.IsInRole("Assistent")){
                 currentUser = _context.Users.Where(x => x.Id == currentUser.SpecialistId).SingleOrDefault();
+                ViewData["Peda"] = currentUser.SpecialistId;
             }
             var mijnContext = _context.Users.Where(x => x.SpecialistId == currentUser.Id);
             ViewData["Active"] = currentUser.Id;

@@ -201,7 +201,19 @@ async function postData(url = '', data = {}) {
     zevendagen.setDate(zevendagen.getDate() + 1);
     const renderPosts = (posts) => 
     {
+        let iets = true
             posts.forEach(post => {
+                @if (User.IsInRole("Pedagoog"))
+                {
+                    var pedagoogid = Model.Where(x => x.UserName == User.Identity.Name).Select(x => x.Id);
+                }
+                @if (User.IsInRole("Assistent"))
+                {
+                    var pedagoogid = Model.Where(x => x.UserName == User.Identity.Name).Select(x => x.SpecialistId);
+                }
+                //check of de post bij de goede pedagoog word gezet
+                if(post.PedagoogId = @ViewData["Peda"]){
+
                 
                 output =`
                 <div class="card col p-0 ml-0 bg-ligt">
@@ -244,7 +256,7 @@ async function postData(url = '', data = {}) {
                 
             });
             postsList.innerHTML += restant;
-    }
+    }}
     console.log("TimeStamp 3");
 
 //get fetch

@@ -95,7 +95,7 @@ namespace src.Controllers
 
             return CreatedAtAction("GetAfspraak", new { id = afspraak.Id }, afspraak);}
             else{
-                return NoContent();
+                return RedirectToAction("GetAfspraak");
             }
         }
 
